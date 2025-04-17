@@ -1,4 +1,4 @@
-
+from model_utils import train_empty_leg_model, predict_empty_leg
 import streamlit as st
 import pandas as pd
 import numpy as np
