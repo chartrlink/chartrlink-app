@@ -6,6 +6,9 @@ from sklearn.preprocessing import LabelEncoder
 
 # Example training function
 def train_empty_leg_model(df):
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.preprocessing import LabelEncoder
+
     le_aircraft = LabelEncoder()
     le_operator = LabelEncoder()
     le_origin = LabelEncoder()
@@ -21,6 +24,9 @@ def train_empty_leg_model(df):
     X = df[['aircraft_type_enc', 'operator_enc', 'origin_enc', 'destination_enc', 'base_enc']]
     y = df['is_one_way']
 
+    if len(set(y)) < 2:
+        raise ValueError("Training data must include both 0s and 1s in 'is_one_way' column.")
+
     clf = RandomForestClassifier(n_estimators=100, random_state=42)
     clf.fit(X, y)
 
@@ -33,7 +39,6 @@ def train_empty_leg_model(df):
     }
 
     return clf, encoders
-
 # Example prediction function
 def predict_empty_leg(df, model, encoders):
     df['aircraft_type_enc'] = encoders['aircraft'].transform(df['aircraft_type'])
